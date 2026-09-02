@@ -5,6 +5,53 @@
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
 
+    <!--  Exo 6 -->
+    <style>
+      #ar-ui {
+        display: none; /* Masqué par défaut (géré par markerFound/Lost) */
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        background: rgba(0, 0, 0, 0.75);
+        padding: 14px 18px;
+        border-radius: 12px;
+        color: #ffffff;
+        font-family: sans-serif;
+        text-align: center;
+        width: 80%;
+        max-width: 300px;
+      }
+      .ui-group {
+        margin-bottom: 10px;
+      }
+      .ui-group:last-child {
+        margin-bottom: 0;
+      }
+      label {
+        display: block;
+        font-size: 13px;
+        margin-bottom: 5px;
+      }
+      input[type="range"] {
+        width: 100%;
+      }
+      .palette {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+      .color-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid white;
+        cursor: pointer;
+        outline: none;
+      }
+    </style>
+
     <!-- Ajouter le clickable exo 3 -->
     <script>
       AFRAME.registerComponent('box-interaction', {
@@ -36,10 +83,28 @@
   </head>
 
   <body>
+    <!-- Exo 6 -->
+     <div id="ar-ui">
+      <div class="ui-group">
+        <label for="scale-slider">Taille de la boîte</label>
+        <input type="range" id="scale-slider" min="0.1" max="3.0" step="0.1" value="1" />
+      </div>
+
+      <div class="ui-group">
+        <label>Palette de couleurs</label>
+        <div class="palette">
+          <button class="color-btn" data-color="#e63946" style="background: #e63946;"></button>
+          <button class="color-btn" data-color="#2a9d8f" style="background: #2a9d8f;"></button>
+          <button class="color-btn" data-color="#1d3557" style="background: #1d3557;"></button>
+        </div>
+      </div>
+    </div>
+
     <!-- Box exo 2 -->
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-      <a-marker preset="hiro">
+      <a-marker id="hiro-marker" preset="hiro">
         <a-box 
+          id="target-box"
           class="clickable"
           box-interaction
           position="0.5 0.5 0.5"
@@ -67,5 +132,38 @@
         <a-cursor raycaster="objects: .clickable" cursor="fuse: false;"></a-cursor>
       </a-entity>
     </a-scene>
+
+    <!-- Exo 6 -->
+    <script>
+      const marker = document.querySelector('#hiro-marker');
+      const ui = document.querySelector('#ar-ui');
+      const box = document.querySelector('#target-box');
+      const scaleSlider = document.querySelector('#scale-slider');
+      const colorButtons = document.querySelectorAll('.color-btn');
+
+      // Afficher l'UI quand le marqueur est détecté
+      marker.addEventListener('markerFound', () => {
+        ui.style.display = 'block';
+      });
+
+      // Masquer l'UI quand le marqueur est perdu de vue
+      marker.addEventListener('markerLost', () => {
+        ui.style.display = 'none';
+      });
+
+      // Changement de taille en temps réel avec le slider
+      scaleSlider.addEventListener('input', (e) => {
+        const val = e.target.value;
+        box.setAttribute('scale', `${val} ${val} ${val}`);
+      });
+
+      // Changement immédiat de couleur au clic sur la palette
+      colorButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const selectedColor = btn.getAttribute('data-color');
+          box.setAttribute('material', 'color', selectedColor);
+        });
+      });
+    </script>
   </body>
 </html>
