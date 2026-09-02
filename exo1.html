@@ -2,11 +2,13 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <title>Exercice 1</title>
-    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   </head>
   <body>
-    <a-scene>
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+
+
+    <!-- Ex 1 -->
       <a-plane position="0 0 0" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
 
       <a-box position="-3 2 0" color="#4CC3D9"></a-box>
@@ -15,7 +17,8 @@
 
       <a-entity position="0 10 15" rotation="-30 0 0">
         <a-camera></a-camera>
-      </a-entity>
+      </a-entity> 
+    
 
       <a-sky color="#ECECEC"></a-sky>
     </a-scene>
