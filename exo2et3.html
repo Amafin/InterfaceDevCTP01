@@ -4,21 +4,52 @@
     <meta charset="UTF-8" />
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+
+    <script>
+      AFRAME.registerComponent('box-interaction', {
+        init: function () {
+          const el = this.el;
+          let active = false;
+
+          el.addEventListener('click', function () {
+            active = !active;
+            
+            // Changement de couleur
+            el.setAttribute('material', 'color', active ? '#EF2D5E' : '#4CC3D9');
+            
+            // Changement d'échelle
+            el.setAttribute('scale', active ? '1.8 1.8 1.8' : '1 1 1');
+            
+            // Accélération de la rotation
+            el.setAttribute('animation', {
+              property: 'rotation',
+              to: '0 360 0',
+              loop: true,
+              dur: active ? 1000 : 4000,
+              easing: 'linear'
+            });
+          });
+        }
+      });
+    </script>
   </head>
   <body>
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-
-    <!-- Ex 2 -->
       <a-marker preset="hiro">
         <a-box 
-          position="0 0 0"
+          class="clickable"
+          box-interaction
+          position="0 0 0" 
           scale="5 5 5"
           material="color: #4CC3D9; transparent: true; opacity: 0.6;"
           animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear">
         </a-box>
       </a-marker>
 
-    <!-- Ex 3 -->
+      <!-- Caméra AR munie d'un curseur pour le clic/tap -->
+      <a-entity camera>
+        <a-cursor raycaster="objects: .clickable" cursor="fuse: false;"></a-cursor>
+      </a-entity>
     </a-scene>
   </body>
 </html>
