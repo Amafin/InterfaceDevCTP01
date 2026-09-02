@@ -7,7 +7,7 @@
   </head>
   <body>
     <!-- Ex 1 -->
-    <a-scene arjs>
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
       <!-- Plan servant de surface de base au centre (0, 0, 0) -->
       <a-plane position="0 0 0" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
 
@@ -17,11 +17,20 @@
       <a-box position="3 2 0" color="#FFC65D"></a-box>
 
       <!-- Camera orientée vers le centre -->
-      <a-entity position="0 10 10" rotation="-30 0 0">
+      <a-entity position="0 10 15" rotation="-30 0 0">
         <a-camera></a-camera>
       </a-entity>
 
       <a-sky color="#ECECEC"></a-sky>
+
+
+      <a-marker preset="hiro">
+        <a-box 
+          position="0 0.5 0" 
+          material="color: #4CC3D9; transparent: true; opacity: 0.6;"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear">
+        </a-box>
+      </a-marker>
     </a-scene>
 
     <!-- Ex 2 -->
